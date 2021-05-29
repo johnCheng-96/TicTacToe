@@ -1,16 +1,32 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+from backend import *
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+def displayBoardAs2D():
+    print(board[0])
+    print(board[1])
+    print(board[2])
+    print()
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    board = createboard()
+    rowsContainer = createRowsContainer()
+    colsContainer = createColsContainer()
+    diagonalContainer = createDiagonalContainer()
+    oppoDiagonalContainer = createOppoDiagonalContainer()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    displayBoardAs2D()
+    board = makeMoke(board, 2, 0, 0, rowsContainer, colsContainer, diagonalContainer, oppoDiagonalContainer)
+    print(winningVerification(rowsContainer, colsContainer, diagonalContainer, oppoDiagonalContainer))
+    displayBoardAs2D()
+
+    board = makeMoke(board, 2, 1, 1, rowsContainer, colsContainer, diagonalContainer, oppoDiagonalContainer)
+    print(winningVerification(rowsContainer, colsContainer, diagonalContainer, oppoDiagonalContainer))
+    displayBoardAs2D()
+
+    board = makeMoke(board, 2, 2, 2, rowsContainer, colsContainer, diagonalContainer, oppoDiagonalContainer)
+    print(winningVerification(rowsContainer, colsContainer, diagonalContainer, oppoDiagonalContainer))
+    displayBoardAs2D()
+
+    print(diagonalContainer)
