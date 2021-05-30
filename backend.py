@@ -36,11 +36,16 @@ def makeMoke(board, who, x, y, rowsCon, colsCon, diaCon, oppCon):
     if (who == 0):
         return board
 
+
+
     # visualisation
     board[y][x] = who
 
-    # container
 
+    # avoid winning collsion
+    if (who == 2):
+        who *= 2
+    # containers
     # rows
     rowsCon[y] += who
 
@@ -65,7 +70,7 @@ def rowWinningVerification(rowsContainer):
     for n in rowsContainer:
         if (n == 3):
             return 1
-        if (n == 6):
+        if (n == 12):
             return 2
 
     return 0
@@ -76,7 +81,7 @@ def colWinningVerification(colsContainer):
     for n in colsContainer:
         if (n == 3):
             return 1
-        if (n == 6):
+        if (n == 12):
             return 2
 
     return 0
@@ -86,7 +91,7 @@ def colWinningVerification(colsContainer):
 def diagonalWinningVerification(diagonalContainer):
     if diagonalContainer[0] == 3:
         return 1
-    if diagonalContainer[0] == 6:
+    if diagonalContainer[0] == 12:
         return 2
 
     return 0
@@ -96,7 +101,7 @@ def diagonalWinningVerification(diagonalContainer):
 def oppoDiagonalWinningVerification(oppoDiagonalContainer):
     if oppoDiagonalContainer[0] == 3:
         return 1
-    if oppoDiagonalContainer[0] == 6:
+    if oppoDiagonalContainer[0] == 12:
         return 2
 
     return 0
@@ -114,3 +119,12 @@ def winningVerification(rowsContainer, colsContainer, diagonalContainer, oppoDia
         return verdict
 
     return 0
+
+
+def switchPlayer(player):
+    if (player == 1):
+        return int(2)
+    elif (player == 2):
+        return int(1)
+    else:
+        return int(0)
