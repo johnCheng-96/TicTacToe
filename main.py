@@ -27,8 +27,6 @@ class Game(tk.Frame):
         self.lineCanvas.create_line(0, 200, 300, 200)
         self.lineCanvas.create_line(200, 0, 200, 300)
         self.lineCanvas.bind('<Button-1>', self.motion)
-        # text = tk.Message(self, text="Welcome to Tic Tac Toe game!", bg='#98ffcc', width=300)
-        # text.pack(fill='both')
         self.lineCanvas.pack()
         self.pack()
 
@@ -81,6 +79,10 @@ class Game(tk.Frame):
             msg = tk.Label(self, text=text, font=("Arial", 49))
             msg.place(x=0, y=100)
             self.labelBin.append(msg)
+            # buttonText = "Another Game"
+            # resetButton = tk.Button(self, text=buttonText, fg='red', highlightbackground='DarkBlue')
+            # resetButton.place(x=90, y=200)
+            self.createAnotherGameButton()
         else:
             if (self.moveCounter == 9):
                 text = "Tie!"
@@ -88,6 +90,27 @@ class Game(tk.Frame):
                 msg.place(x=110, y=120)
                 self.labelBin.append(msg)
 
+                self.createAnotherGameButton()
+
+        self.player = switchPlayer(self.player)
+
+    def resetGame(self):
+        for label in self.labelBin:
+            label.destroy()
+        self.resetButton.destroy()
+        self.board, self.rowsContainer, self.colsContainer, self.diagonalContainer, self.oppoDiagonalContainer, self.player = init()
+        self.moveCounter = 0
+        self.labelBin = []
+        self.status = 0
+
+
+
+
+
+    def createAnotherGameButton(self):
+        buttonText = "Another Game"
+        self.resetButton = tk.Button(self, text=buttonText, fg='red', highlightbackground='DarkBlue', command=self.resetGame)
+        self.resetButton.place(x=90, y=200)
 
             # nextGameFlag = input("Still want to play? (y/n) : ")
             # if (nextGameFlag.lower() != "y"):
@@ -96,7 +119,9 @@ class Game(tk.Frame):
             # self.board, self.rowsContainer, self.colsContainer, self.diagonalContainer, self.oppoDiagonalContainer, self.player = init()
 
             # no one win switch player
-        self.player = switchPlayer(self.player)
+
+
+
 
     def displayBoardAs2D(self):
         print(self.board[0])
@@ -110,7 +135,6 @@ def init():
     return createboard(), createRowsContainer(), createColsContainer(), createDiagonalContainer(), createOppoDiagonalContainer(), 1
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
 
     # board, rowsContainer, colsContainer, diagonalContainer, oppoDiagonalContainer, player = init()
