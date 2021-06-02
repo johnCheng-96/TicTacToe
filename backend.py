@@ -1,15 +1,5 @@
 import array as arr
 
-#   012
-# 0 123
-# 1 456
-# 2 789
-
-
-# size 9 array, 0 means null, 1 means x, 2 means o
-# x play first
-import math
-
 
 def createboard():
     board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -36,11 +26,8 @@ def makeMoke(board, who, x, y, rowsCon, colsCon, diaCon, oppCon):
     if (who == 0):
         return board
 
-
-
     # visualisation
     board[y][x] = who
-
 
     # avoid winning collsion
     if (who == 2):

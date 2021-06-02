@@ -17,26 +17,35 @@ class Game(tk.Frame):
                                     width=self.width,
                                     height=self.height, bd=0, highlightthickness=0)
 
-        self.canvas = tk.Canvas(self, bg='#98ffcc',
-                                width=self.width,
-                                height=self.height, bd=0, highlightthickness=0)
+        # self.canvas = tk.Canvas(self, bg='#98ffcc',
+        #                         width=self.width,
+        #                         height=self.height, bd=0, highlightthickness=0)
         # self.canvas.create_line(0, 0, 300, 0)
-
-        self.lineCanvas.create_line(0, 100, 300, 100)
-        self.lineCanvas.create_line(100, 0, 100, 300)
-        self.lineCanvas.create_line(0, 200, 300, 200)
-        self.lineCanvas.create_line(200, 0, 200, 300)
+        self.drawGrid()
         self.lineCanvas.bind('<Button-1>', self.motion)
         self.lineCanvas.pack()
         self.pack()
 
         self.board, self.rowsContainer, self.colsContainer, self.diagonalContainer, self.oppoDiagonalContainer, self.player = init()
 
-    def motion(self, event):
+    def drawGrid(self):
+        self.lineCanvas.create_line(0, 100, 300, 100)
+        self.lineCanvas.create_line(100, 0, 100, 300)
+        self.lineCanvas.create_line(0, 200, 300, 200)
+        self.lineCanvas.create_line(200, 0, 200, 300)
 
-        x = event.x
-        y = event.y
+    def endGameProcess(self, text):
+        msg = tk.Label(self, text=text, font=("Arial", 49))
+        if (self.status > 0):
+            msg.place(x=0, y=100)
+        else:
+            msg.place(x=110, y=120)
 
+        self.labelBin.append(msg)
+        self.createAnotherGameButton()
+
+
+    def convertMouseLocToRowNCol(self, x, y):
         if (x < 100):
             colNum = 0
         elif (x >= 100 and x < 200):
@@ -51,6 +60,16 @@ class Game(tk.Frame):
         elif (y >= 200 and y < 300):
             rowNum = 2
 
+        return rowNum, colNum
+
+    def motion(self, event):
+
+        x = event.x
+        y = event.y
+
+        rowNum, colNum = self.convertMouseLocToRowNCol(x, y)
+
+        ''' if the place is occupied '''
         if (self.board[rowNum][colNum] != 0):
             return
 
@@ -59,12 +78,14 @@ class Game(tk.Frame):
 
         if (self.player == 1):
             piece = "×"
+            yAdjust = 8
         elif (self.player == 2):
             piece = "○"
+            yAdjust = 3
 
         theMove = tk.Label(self, text=piece, bg='#98ffcc', font=("Arial", 70), bd=0, highlightthickness=0)
         self.labelBin.append(theMove)
-        theMove.place(x=colNum * 100 + 28, y=rowNum * 100 + 8)
+        theMove.place(x=colNum * 100 + 28, y=rowNum * 100 + yAdjust)
         self.moveCounter += 1
         self.status = winningVerification(self.rowsContainer, self.colsContainer, self.diagonalContainer,
                                           self.oppoDiagonalContainer)
@@ -75,22 +96,16 @@ class Game(tk.Frame):
 
             if (self.status == 2):
                 gameWinner = "2"
+
             text = "Player " + gameWinner + " won!"
-            msg = tk.Label(self, text=text, font=("Arial", 49))
-            msg.place(x=0, y=100)
-            self.labelBin.append(msg)
-            # buttonText = "Another Game"
-            # resetButton = tk.Button(self, text=buttonText, fg='red', highlightbackground='DarkBlue')
-            # resetButton.place(x=90, y=200)
-            self.createAnotherGameButton()
+            self.endGameProcess(text)
+
         else:
             if (self.moveCounter == 9):
                 text = "Tie!"
-                msg = tk.Label(self, text=text, font=("Arial", 49))
-                msg.place(x=110, y=120)
-                self.labelBin.append(msg)
 
-                self.createAnotherGameButton()
+                self.endGameProcess(text)
+
 
         self.player = switchPlayer(self.player)
 
